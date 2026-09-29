@@ -139,8 +139,8 @@ export async function fetchDataJudCase(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        size: 1,
-        query: { term: { numeroProcesso: input.cnjNumber } },
+        size: 10,
+        query: { match: { numeroProcesso: input.cnjNumber } },
       }),
     },
   );
@@ -148,7 +148,9 @@ export async function fetchDataJudCase(
   if (!response.ok) throw new DataJudRequestError();
 
   const body = (await response.json()) as DataJudResponse;
-  const source = body.hits?.hits?.[0]?._source;
+  const source = body.hits?.hits?.find(
+    (hit) => hit._source?.numeroProcesso === input.cnjNumber,
+  )?._source;
   if (!source) throw new DataJudCaseNotFoundError();
 
   return mapCase(source, input.courtCode);

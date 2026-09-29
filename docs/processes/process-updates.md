@@ -89,6 +89,11 @@ O DataJud expõe um índice por tribunal (`api_publica_<alias>`). Como o número
 codifica o segmento da Justiça e o tribunal, derivamos o alias sem precisar guardar nada
 extra no processo (`datajud-court.ts`).
 
+A importação consulta esse índice com `match` em `numeroProcesso`, conforme a API pública
+do CNJ, e aceita apenas um resultado cujo CNJ seja idêntico ao solicitado. Uma resposta
+sem esse número exato é tratada como processo não encontrado. Isso vale também para a
+sincronização dos andamentos.
+
 O CNJ tem 20 dígitos no formato `NNNNNNN DD AAAA J TR OOOO`. Usamos o dígito do segmento
 (`J`, posição 14) e os dois dígitos do tribunal (`TR`, posições 15–16):
 
